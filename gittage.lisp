@@ -395,7 +395,7 @@ The lists of pathnames returned have following semantics:
   (multiple-value-bind (remote-names urls) (remotes directory)
     (iter (for remote-name in remote-names)
           (for remote-url in urls)
-          (finding remote-url such-that (eq name remote-name)))))
+          (finding remote-url such-that (string= name remote-name)))))
 
 (defun add-remote (name url &optional (directory *repository*))
   (with-explanation ("adding a git remote ~A (~A) in ~S" name url directory)
