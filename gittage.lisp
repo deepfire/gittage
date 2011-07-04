@@ -730,23 +730,17 @@ in a temporary pseudo-commit."
                                                 (dotgit (dotgit path))
                                                 (*repository* path))
   (with-directory (path :if-does-not-exist :create)
-    (with-repository-policy (when (directory-created-p)
-                              :new-repo)
-      (handler-bind ((error (lambda (c)
-                              (declare (ignore c))
-                              ;; Maintain the no-useless-directories-added invariant.
-                              ;; non-negotiable
-                              (when (and (directory-created-p)
-                                         (not (directory-has-objects-p dotgit)))
-                                (fad:delete-directory-and-files path))
-                              #| Continue signalling. |#)))
-        (let ((effectively-new (or (directory-created-p)
-                                   (directory-empty-p path))))
-          (format t "~S D-C-P ~S, D-E-P ~S => E-N ~S~%"
-                  path
-                  (directory-created-p)
-                  (directory-empty-p path)
-                  effectively-new)
+    (let ((effectively-new (or (directory-created-p)
+                               (directory-empty-p path))))
+      (with-repository-policy (when (directory-created-p)
+                                :new-repo)
+        (handler-bind ((error (lambda (c)
+                                (declare (ignore c))
+                                ;; Maintain the no-useless-directories-added invariant.
+                                ;; non-negotiable
+                                (when (directory-created-p)
+                                  (fad:delete-directory-and-files path))
+                                #| Continue signalling. |#)))
           (cond
             (effectively-new
              (ecase if-repository-does-not-exist
