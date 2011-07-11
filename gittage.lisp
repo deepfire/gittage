@@ -142,7 +142,7 @@ in order of strictly decreasing likelihood."
 (defun directory-has-objects-p (directory)
   (not (null (or (directory (subfile directory '("objects" "pack" :wild) :type :wild))
                  (find-if (lambda (x) (= 2 (length (lastcar (pathname-directory x)))))
-                          (directory (merge-pathnames ".git/objects/*/" directory)))))))
+                          (directory (merge-pathnames "objects/*/" directory)))))))
 
 (defun dotgit (directory)
   "Given a repository DIRECTORY, return the path to its git storage
