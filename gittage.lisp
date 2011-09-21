@@ -413,7 +413,7 @@ The lists of pathnames returned have following semantics:
     (unless (or found-good-url-p url)
       (setf url (extort-remote-url name directory)))
     (when (and found-url (not found-good-url-p))
-      (remove-remote name directory))
+      (remove-remote name))
     (unless found-good-url-p
       (add-remote (down-case-string name) url directory))))
 
